@@ -1,12 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Platform, StatusBar } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import Sets from './screens/Sets';
+import { SetProvider } from './context/SetContext';
+import PlaySet from './screens/PlaySet';
+import NewSet from './screens/NewSet';
+import { PlaySetProps, RootStackParamList } from './types/Types';
 
-export default function App() {
+const Stack = createStackNavigator<RootStackParamList>();
+
+export default function App(): JSX.Element {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={styles.AndroidSafeArea}>
+      <SetProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen name="Sets" component={Sets} />
+            <Stack.Screen
+              name="PlaySet"
+              component={PlaySet}
+              options={({ route }: PlaySetProps) => ({ title: route.params.set.name})}
+            />
+            <Stack.Screen name="NewSet" component={NewSet} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SetProvider>
+    </SafeAreaView>
   );
 }
 
@@ -17,4 +36,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  AndroidSafeArea: {
+    flex: 1,
+    backgroundColor: "white",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
+  }
 });
