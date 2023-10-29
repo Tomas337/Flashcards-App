@@ -1,20 +1,26 @@
-import {Dimensions} from 'react-native';
-
-const COL = 5;
 export const MARGIN = 8;
-export const SIZE = Dimensions.get('window').width / COL - MARGIN;
+export const SIZE = 30;
 
 export const getPosition = (index: number) => {
   'worklet';
-  return {
-    x: (index % COL) * SIZE,
-    y: Math.floor(index / COL) * SIZE,
-  };
+  switch (index) {
+    case 1:
+      return { x: 0, y: 0 };
+    case 2:
+      return { x: 0, y: 30 };
+    case 3:
+      return { x: 0, y: 60 };
+    default:
+      return { x: 0, y: 60 };
+  }
 };
 
 export const getOrder = (x: number, y: number) => {
   'worklet';
-  const row = Math.round(y / SIZE);
-  const col = Math.round(x / SIZE);
-  return row * COL + col;
+  if (y < 15)
+    return 1;
+  else if (y >= 15 && y < 30)
+    return 2;
+  else
+    return 3;
 };
