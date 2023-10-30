@@ -28,6 +28,8 @@ export const SetProvider = ({
   }, []);
 
   return (
-    <SetContext.Provider value={sets}>{children}</SetContext.Provider>
+    <SetContext.Provider value={sets}>
+      {children}
+    </SetContext.Provider>
   );
 };
